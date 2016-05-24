@@ -22,5 +22,18 @@ $ docker run -v $(pwd):/var/www/html --name my-php -d my-php
 
 To run the Nginx image, run:
 ```
-$ docker run -v $(pwd):/var/www/html -p 8080:80 my-wordpress
+$ docker run -v $(pwd):/var/www/html --link my-php:my-php -p 8080:80 my-wordpress
 ```
+
+### With docker-compose
+
+To build all the images, run:
+```
+$ docker-compose build
+```
+
+To run the images, run:
+```
+$ docker-compose up
+```
+(cancel these with `CTRL + C`)
