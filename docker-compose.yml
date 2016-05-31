@@ -1,24 +1,19 @@
 version: '2'
 services:
-  my-nginx:
+  wordpress:
     build: .
     volumes:
-      - .:/var/www/html
+      - ./content:/var/www/content
+    environment:
+      DOCKER_ENV: development
+      WP_DB_NAME: wp
+      WP_DB_USER: wp
+      WP_DB_PASSWORD: wp
+      WP_DB_HOST: mysql
+      WP_SITEURL: http://localhost:8080
     ports:
       - "8080:80"
-    links:
-      - my-php
-  my-php:
-    build:
-      context: .
-      dockerfile: Dockerfile.php-fpm
-    volumes:
-      - .:/var/www/html
-    ports:
-      - "9000:9000"
-    links:
-      - my-mysql
-  my-mysql:
+  mysql:
     image: mariadb:5.5
     volumes:
       - /var/lib/mysql
