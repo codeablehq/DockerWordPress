@@ -1,2 +1,4 @@
 wp
+db
 content
+redis

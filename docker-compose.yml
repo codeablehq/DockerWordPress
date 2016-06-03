@@ -4,21 +4,32 @@ services:
     build: .
     volumes:
       - ./content:/var/www/content
-    environment:
-      DOCKER_ENV: development
-      WP_DB_NAME: wp
-      WP_DB_USER: wp
-      WP_DB_PASSWORD: wp
-      WP_DB_HOST: mysql
-      WP_SITEURL: http://localhost:8080
+    env_file: .env
     ports:
       - "8080:80"
+    links:
+      - mysql
+      - redis
+  cron:
+    build: .
+    command: crond -f -l 6 -L /dev/stdout
+    volumes:
+      - ./content:/var/www/content
+    env_file: .env
+    links:
+      - mysql
+      - redis
   mysql:
     image: mariadb:5.5
     volumes:
-      - /var/lib/mysql
+      - ./db:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: wp
       MYSQL_DATABASE: wp
       MYSQL_USER: wp
       MYSQL_PASSWORD: wp
+  redis:
+    image: redis:3.2.0-alpine
+    command: redis-server --appendonly yes
+    volumes:
+      - ./redis:/data

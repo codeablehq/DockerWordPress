@@ -21,9 +21,21 @@
 // General settings, we should get most of them via environment vars
 define('WP_HOME', getenv('WP_SITEURL'));
 define('WP_SITEURL', getenv('WP_SITEURL'));
-define('WP_CONTENT_DIR', '/var/www/content');
-define('WP_CONTENT_URL', WP_SITEURL . '/content');
-define('FS_METHOD', 'direct');
+
+// Since our wp-content is named content, and it's in a nother directory
+// alltogether, we need to define it properly, so WP can find it
+define('WP_CONTENT_DIR', getenv('WP_CONTENT_DIR'));
+define('WP_CONTENT_URL', WP_SITEURL . '/' . getenv('WP_CONTENT_DIRNAME'));
+
+// We don't have FTP, so only direct writing of files
+define('FS_METHOD', getenv('FS_METHOD'));
+
+// We don't need WP's default cron, so disable it
+define('DISABLE_WP_CRON', getenv('DISABLE_WP_CRON'));
+
+// Redis settings
+define('WP_REDIS_HOST', getenv('WP_REDIS_HOST'));
+define('WP_CACHE_KEY_SALT', getenv('WP_CACHE_KEY_SALT'));
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
@@ -53,14 +65,14 @@ define('DB_COLLATE', '');
  *
  * @since 2.6.0
  */
-define('AUTH_KEY',         'z9B)OPf u{{%AKxL{iLuXQY|.<j-xnHq7i=Si9(QMj,OTB/4gYky$6*#m)sQlM_-');
-define('SECURE_AUTH_KEY',  'TtZUvYf5t:a[5`=U_Nu,_;Gvcv*5:qq|T[J5bD[b>+pGqIY84?[b;Ry[Vx|TjYW#');
-define('LOGGED_IN_KEY',    '+?fkOv_=:Mn%HfbOr9Z9qSVSJ$wb:7:|[A+.&&N{tU#.Q(Q@o[tOqvI7~|f.,#CH');
-define('NONCE_KEY',        'gY?,x,2C,r8;;xK6&+C~DuvU&KSyS{CK|x=2t@#;Yv{3~$E7Ez13Sa$6<I-m@VZ]');
-define('AUTH_SALT',        '#g)3Ojnx3D cd9jcFe+0Dd<D{a|&6QLIRMi`j:{|h)tH+0AbSfdK9!L]JFDaNX)h');
-define('SECURE_AUTH_SALT', 'b|q!VWk>`ywK2l1pCZE||)Y lGw9*)zDa.[_PJLlxQsPHt{[#xL$3d.`/[wZ0sn ');
-define('LOGGED_IN_SALT',   'p}W=n6EF|f,G6+.m`G+-WxguJ<z7|=Aszc4&:-ZM>xbZf+n7;mE`lI@6N||E+-o|');
-define('NONCE_SALT',       'K: <W|-d-hNwedf=sUbU#=_SoKyV3 5(P|~H|`(i9M-w1O3vks|YbJ*)hNXf7NUW');
+define('AUTH_KEY', getenv('AUTH_KEY'));
+define('SECURE_AUTH_KEY', getenv('SECURE_AUTH_KEY'));
+define('LOGGED_IN_KEY', getenv('LOGGED_IN_KEY'));
+define('NONCE_KEY', getenv('NONCE_KEY'));
+define('AUTH_SALT', getenv('AUTH_SALT'));
+define('SECURE_AUTH_SALT', getenv('SECURE_AUTH_SALT'));
+define('LOGGED_IN_SALT', getenv('LOGGED_IN_SALT'));
+define('NONCE_SALT', getenv('NONCE_SALT'));
 
 /**#@-*/
 
@@ -70,7 +82,7 @@ define('NONCE_SALT',       'K: <W|-d-hNwedf=sUbU#=_SoKyV3 5(P|~H|`(i9M-w1O3vks|Y
  * You can have multiple installations in one database if you give each
  * a unique prefix. Only numbers, letters, and underscores please!
  */
-$table_prefix  = 'wp_';
+$table_prefix  = getenv('WP_TABLE_PREFIX');
 
 /**
  * For developers: WordPress debugging mode.
@@ -84,7 +96,7 @@ $table_prefix  = 'wp_';
  *
  * @link https://codex.wordpress.org/Debugging_in_WordPress
  */
-define('WP_DEBUG', true);
+define('WP_DEBUG', getenv('WP_DEBUG'));
 
 /* That's all, stop editing! Happy blogging. */
 
